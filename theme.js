@@ -3,20 +3,26 @@
 // ============================================================
 
 const COLORS = {
+  // Core brand colors
+  MID_BLUE: '0085CA',
+  LIGHT_BLUE: '00B5E2',
+  SECONDARY: '00B5E2',
+
   // Backgrounds
   BG: 'FFFFFF',
-  BG_CARD: 'F0F7FB',
-  BG_SURFACE: 'E3EFF6',
-  BORDER: 'C4D9E8',
+  BG_CARD: 'F2FBFD',
+  BG_SURFACE: 'E6F8FC',
+  BORDER: 'B6EAF7',
 
   // Text
-  TEXT_PRIMARY: '009CDE',
-  TEXT_BODY: '3C3C3C',
-  TEXT_MUTED: '009CDE',
+  TEXT_PRIMARY: '0085CA',
+  TEXT_BODY: '000000',
+  TEXT_MUTED: '0085CA',
 
   // Accent
-  ACCENT: '009CDE',
-  ACCENT_SOFT: 'E0F2FC',
+  ACCENT: '0085CA',
+  ACCENT_SECONDARY: '00B5E2',
+  ACCENT_SOFT: 'E6F8FC',
 
   // Utility
   WHITE: 'FFFFFF',
@@ -26,9 +32,13 @@ const FONTS = {
   HEADING: 'Arial',
   BODY: 'Arial',
   MONO: 'Consolas',
-  TITLE_SIZE: 26,
-  SUBTITLE_SIZE: 14,
+  TITLE_SIZE: 24,
+  SUBHEADER_SIZE: 15,
+  SUBTITLE_SIZE: 15,
   BODY_SIZE: 13,
+  BODY_MIN_SIZE: 12,
+  BODY_MAX_SIZE: 15,
+  HIGHLIGHT_SIZE: 15,
   SMALL_SIZE: 10,
   TABLE_SIZE: 11,
   TABLE_HEADER_SIZE: 12,
@@ -36,21 +46,35 @@ const FONTS = {
 
 // Layout grid (inches, 10x5.63 canvas)
 const LAYOUT = {
+  SLIDE_W: 10,
+  SLIDE_H: 5.625,
+
   // Chrome (header, logo, footer — managed by theme)
   MARGIN_L: 0.8,
   MARGIN_R: 0.8,
   CONTENT_X: 0.8,
   CONTENT_W: 8.4,
-  TITLE_Y: 0.5,
-  TITLE_H: 0.5,
-  FOOTER_Y: 5.25,
-  FOOTER_H: 0.25,
+  TITLE_Y: 0.3,
+  TITLE_H: 0.45,
+  FOOTER_LINE_Y: 5.365,
+  FOOTER_LINE_H: 0.03,
+  FOOTER_Y: 5.455,
+  FOOTER_H: 0.12,
+  FOOTER_LEFT_X: 0.1,
+  FOOTER_LEFT_W: 5.25,
+  FOOTER_DATE_X: 8.55,
+  FOOTER_DATE_W: 0.75,
+  FOOTER_DIVIDER_X: 9.4,
+  FOOTER_DIVIDER_W: 0.08,
+  FOOTER_PAGE_X: 9.63,
+  FOOTER_PAGE_W: 0.18,
+  FOOTER_FONT_SIZE: 7,
 
   // Free content box — AI can place anything here without restrictions
   FREE_X: 0.8,
-  FREE_Y: 1.15,
+  FREE_Y: 1.0,
   FREE_W: 8.4,
-  FREE_H: 3.85,
+  FREE_H: 4.1,
 };
 
 let slideCounter = 0;
@@ -69,6 +93,35 @@ function updatePresentationSettings(title, date, logo) {
 
 function resetSlideCounter(val) {
   slideCounter = val !== undefined ? val : 0;
+}
+
+function formatFooterDate(date) {
+  if (!date) return '';
+
+  const input = String(date).trim();
+
+  // ISO-like dates from scripts or metadata.
+  const isoMatch = input.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/);
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch;
+    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+  }
+
+  // Preserve already-correct template format.
+  const dmyMatch = input.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (dmyMatch) {
+    const [, first, second, year] = dmyMatch;
+    const firstNum = Number(first);
+    const secondNum = Number(second);
+
+    if (firstNum > 12 || secondNum <= 12) {
+      return `${first.padStart(2, '0')}/${second.padStart(2, '0')}/${year}`;
+    }
+
+    return `${second.padStart(2, '0')}/${first.padStart(2, '0')}/${year}`;
+  }
+
+  return input;
 }
 
 // ── Base slide layout ──────────────────────────────────────
@@ -95,38 +148,63 @@ function applySlideBase(slide, opts = {}) {
   if (!skipFooter) {
     // Bottom accent line
     slide.addShape('rect', {
-      x: LAYOUT.CONTENT_X,
-      y: LAYOUT.FOOTER_Y - 0.08,
-      w: LAYOUT.CONTENT_W,
-      h: 0.015,
+      x: 0,
+      y: LAYOUT.FOOTER_LINE_Y,
+      w: LAYOUT.SLIDE_W,
+      h: LAYOUT.FOOTER_LINE_H,
       fill: { color: COLORS.ACCENT },
+      line: { color: COLORS.ACCENT, transparency: 100 },
     });
 
-    // © Exyte I {title} (left)
-    const footerLeft = presentationTitle ? `\u00A9 Exyte I ${presentationTitle}` : '\u00A9 Exyte';
+    // © Exyte | {title} (left)
+    const footerLeft = presentationTitle ? `\u00A9 Exyte | ${presentationTitle}` : '\u00A9 Exyte';
     slide.addText(footerLeft, {
-      x: LAYOUT.CONTENT_X,
+      x: LAYOUT.FOOTER_LEFT_X,
       y: LAYOUT.FOOTER_Y,
-      w: 5,
+      w: LAYOUT.FOOTER_LEFT_W,
       h: LAYOUT.FOOTER_H,
-      fontSize: 8,
+      fontSize: LAYOUT.FOOTER_FONT_SIZE,
       fontFace: FONTS.BODY,
       color: COLORS.TEXT_MUTED,
       align: 'left',
       valign: 'middle',
     });
 
-    // {date}  |  {page} (right)
-    const rightParts = [presentationDate, String(currentSlide)].filter(Boolean).join('  |  ');
-    slide.addText(rightParts, {
-      x: 7.8,
+    // {date} | {page} (right)
+    const footerDate = formatFooterDate(presentationDate);
+    slide.addText(footerDate, {
+      x: LAYOUT.FOOTER_DATE_X,
       y: LAYOUT.FOOTER_Y,
-      w: 1.4,
+      w: LAYOUT.FOOTER_DATE_W,
       h: LAYOUT.FOOTER_H,
-      fontSize: 8,
+      fontSize: LAYOUT.FOOTER_FONT_SIZE,
       fontFace: FONTS.BODY,
       color: COLORS.TEXT_MUTED,
       align: 'right',
+      valign: 'middle',
+    });
+
+    slide.addText('|', {
+      x: LAYOUT.FOOTER_DIVIDER_X,
+      y: LAYOUT.FOOTER_Y,
+      w: LAYOUT.FOOTER_DIVIDER_W,
+      h: LAYOUT.FOOTER_H,
+      fontSize: LAYOUT.FOOTER_FONT_SIZE,
+      fontFace: FONTS.BODY,
+      color: COLORS.TEXT_MUTED,
+      align: 'center',
+      valign: 'middle',
+    });
+
+    slide.addText(String(currentSlide), {
+      x: LAYOUT.FOOTER_PAGE_X,
+      y: LAYOUT.FOOTER_Y,
+      w: LAYOUT.FOOTER_PAGE_W,
+      h: LAYOUT.FOOTER_H,
+      fontSize: LAYOUT.FOOTER_FONT_SIZE,
+      fontFace: FONTS.BODY,
+      color: COLORS.TEXT_MUTED,
+      align: 'center',
       valign: 'middle',
     });
   }
@@ -144,40 +222,57 @@ function addTitle(slide, text) {
     fontFace: FONTS.HEADING,
     color: COLORS.TEXT_PRIMARY,
     bold: true,
-    valign: 'bottom',
+    valign: 'middle',
   });
 }
 
-function addSubtitle(slide, text) {
+function addSubheader(slide, text, overrides = {}) {
+  const {
+    x = LAYOUT.FREE_X,
+    y = LAYOUT.FREE_Y,
+    w = LAYOUT.FREE_W,
+    h = 0.3,
+    ...textOpts
+  } = overrides;
+
   slide.addText(text, {
-    x: LAYOUT.FREE_X,
-    y: LAYOUT.FREE_Y,
-    w: LAYOUT.FREE_W,
-    h: 0.3,
-    fontSize: FONTS.SUBTITLE_SIZE,
+    x,
+    y,
+    w,
+    h,
+    fontSize: FONTS.SUBHEADER_SIZE,
     fontFace: FONTS.BODY,
-    color: COLORS.TEXT_BODY,
-    italic: true,
+    color: COLORS.SECONDARY,
+    bold: true,
     valign: 'top',
+    ...textOpts,
   });
+}
+
+function addSubtitle(slide, text, overrides = {}) {
+  return addSubheader(slide, text, overrides);
 }
 
 function addBody(slide, textOrArray, overrides = {}) {
-  const pos = {
-    x: LAYOUT.FREE_X,
-    y: LAYOUT.FREE_Y + 0.4,
-    w: LAYOUT.FREE_W,
-    h: LAYOUT.FREE_H - 0.4,
-    ...overrides,
-  };
+  const {
+    x = LAYOUT.FREE_X,
+    y = LAYOUT.FREE_Y + 0.4,
+    w = LAYOUT.FREE_W,
+    h = LAYOUT.FREE_H - 0.4,
+    ...textOpts
+  } = overrides;
 
   slide.addText(textOrArray, {
-    ...pos,
+    x,
+    y,
+    w,
+    h,
     fontSize: FONTS.BODY_SIZE,
     fontFace: FONTS.BODY,
     color: COLORS.TEXT_BODY,
     valign: 'top',
     lineSpacing: 22,
+    ...textOpts,
   });
 }
 
@@ -244,6 +339,15 @@ function makeTextRun(text, opts = {}) {
   };
 }
 
+function makeHighlightRun(text, opts = {}) {
+  return makeTextRun(text, {
+    fontSize: FONTS.HIGHLIGHT_SIZE,
+    bold: true,
+    color: COLORS.SECONDARY,
+    ...opts,
+  });
+}
+
 // ── Callout box helper ──────────────────────────────────────
 
 function addCalloutBox(slide, textRuns, opts = {}) {
@@ -283,10 +387,12 @@ module.exports = {
   updatePresentationSettings,
   applySlideBase,
   addTitle,
+  addSubheader,
   addSubtitle,
   addBody,
   addStyledTable,
   makeTextRun,
+  makeHighlightRun,
   addCalloutBox,
   resetSlideCounter,
 };

@@ -1,0 +1,8 @@
+task mode: create
+primary deck-profile: engineering-platform
+secondary profile gates: strategy-leadership clarity
+required proof objects: cover metric rail, three-loop workflow diagram, editable QA score bar chart
+source/asset requirements: no external sources; all figures are illustrative example data
+brand authenticity constraints: no logos, app icons, partner marks, screenshots, or pseudo-branded assets
+profile-specific QA gates: workflow labels must stay technically meaningful; charts and diagrams must remain editable and readable after render
+known missing inputs: user did not specify topic, brand, audience, or data source; deck uses an AI-assisted PPTX workflow example

@@ -1,0 +1,3 @@
+No source deck, source data, reference deck, logos, screenshots, or identity assets were provided.
+
+All numeric values in the deck are illustrative example data intended to demonstrate the PPTX skill output. Footer text on slides identifies the data as illustrative.
