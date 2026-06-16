@@ -1,0 +1,8 @@
+interface:
+  display_name: "Exyte PPTX Generator"
+  short_description: "Create branded PPTX decks from Markdown"
+  brand_color: "#0085CA"
+  default_prompt: "Use $exyte-pptx-generator to create a branded PowerPoint deck from my Markdown notes."
+
+policy:
+  allow_implicit_invocation: true

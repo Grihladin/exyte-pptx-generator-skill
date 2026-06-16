@@ -1,10 +1,11 @@
 {
   "name": "pptx-slide-generator",
   "version": "1.0.0",
-  "description": "AI-driven PowerPoint generator using pptxgenjs with a corporate theme system",
-  "main": "build.js",
+  "description": "AI-driven PowerPoint generator using pptxgenjs with a TypeScript corporate theme system",
+  "main": "build.ts",
   "scripts": {
-    "build": "node build.js"
+    "build": "tsx build.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": ["pptx", "powerpoint", "slides", "pptxgenjs"],
   "author": "Michael Ratke",
@@ -12,5 +13,10 @@
   "type": "commonjs",
   "dependencies": {
     "pptxgenjs": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
   }
 }

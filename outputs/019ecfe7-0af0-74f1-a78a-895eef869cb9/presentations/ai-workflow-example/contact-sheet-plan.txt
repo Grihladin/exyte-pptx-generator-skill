@@ -1,5 +1,0 @@
-slide 1: cover with right-side metric rail and large editorial claim.
-slide 2: wide three-stage workflow diagram with equal-role boxes and centerline connectors.
-slide 3: dark analytical page with context rail and editable paired-bar chart.
-
-Rhythm gate: all three slides use distinct macro-layout families.
