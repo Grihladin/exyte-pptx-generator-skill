@@ -91,8 +91,12 @@ export default function buildSlide(pptx: PptxDeck, theme: ThemeApi): void {
 
 - Use existing typography and color helpers from `theme.ts`; do not reimplement standard text styling in slide files.
 - Use `theme.addTitle()`, `theme.addSubheader()` / `theme.addSubtitle()`, `theme.addBody()`, `theme.makeTextRun()`, and `theme.makeHighlightRun()` for standard text.
+- Main slide headers created with `theme.addTitle()` are Arial, regular weight, dark blue, and may use the theme title size.
+- Subheadings created with `theme.addSubheader()` / `theme.addSubtitle()` are Arial Bold, light blue, 15 pt.
+- Body text, table text, callout text, and other normal slide text are Arial, black, 15 pt.
+- Text highlighting means bold black text only. Use `theme.makeHighlightRun()` for inline emphasis; do not use heading or subheading styling as a highlighter, and do not turn highlighted words light blue.
 - Use `theme.COLORS` constants for custom shapes, fills, borders, or manual text overrides.
-- Only hand-specify fonts, sizes, or hex colors when a genuinely custom element is not covered by the current theme helpers.
+- Only hand-specify fonts, sizes, or hex colors when a genuinely custom element is not covered by the current theme helpers; normal slide text must stay at 15 pt.
 - No emoji.
 - Do not use vertical accent bars on callout boxes or cards. Use background color and rounded corners instead.
 

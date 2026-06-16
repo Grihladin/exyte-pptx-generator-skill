@@ -43,13 +43,13 @@ export const FONTS = {
   TITLE_SIZE: 24,
   SUBHEADER_SIZE: 15,
   SUBTITLE_SIZE: 15,
-  BODY_SIZE: 13,
-  BODY_MIN_SIZE: 12,
+  BODY_SIZE: 15,
+  BODY_MIN_SIZE: 15,
   BODY_MAX_SIZE: 15,
   HIGHLIGHT_SIZE: 15,
-  SMALL_SIZE: 10,
-  TABLE_SIZE: 11,
-  TABLE_HEADER_SIZE: 12,
+  SMALL_SIZE: 15,
+  TABLE_SIZE: 15,
+  TABLE_HEADER_SIZE: 15,
 } as const;
 
 export const PRESENTATION_LANGUAGE = "en-US";
@@ -262,7 +262,7 @@ export function addTitle(slide: Slide, text: string): void {
     fontSize: FONTS.TITLE_SIZE,
     fontFace: FONTS.HEADING,
     color: COLORS.TEXT_PRIMARY,
-    bold: true,
+    bold: false,
     valign: "middle",
     lang: PRESENTATION_LANGUAGE,
   });
@@ -278,7 +278,7 @@ export function addSubheader(slide: Slide, text: string, overrides: Partial<Text
     h,
     fontSize: FONTS.SUBHEADER_SIZE,
     fontFace: FONTS.BODY,
-    color: COLORS.SECONDARY,
+    color: COLORS.LIGHT_BLUE,
     bold: true,
     valign: "top",
     lang: PRESENTATION_LANGUAGE,
@@ -380,9 +380,8 @@ export function makeTextRun(text: string, opts: Partial<TextOptions> = {}): Text
 
 export function makeHighlightRun(text: string, opts: Partial<TextOptions> = {}): TextRun {
   return makeTextRun(text, {
-    fontSize: FONTS.HIGHLIGHT_SIZE,
     bold: true,
-    color: COLORS.SECONDARY,
+    color: COLORS.TEXT_BODY,
     ...opts,
   });
 }
@@ -408,7 +407,7 @@ export function addCalloutBox(slide: Slide, textRuns: TextRuns, opts: CalloutBox
     w: w - 0.3,
     h,
     fontFace: FONTS.BODY,
-    fontSize: opts.fontSize ?? 12,
+    fontSize: opts.fontSize ?? FONTS.BODY_SIZE,
     color: COLORS.TEXT_BODY,
     valign: "middle",
     lang: PRESENTATION_LANGUAGE,
