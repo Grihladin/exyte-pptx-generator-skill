@@ -9,13 +9,6 @@ Create an editable PowerPoint deck project from user-provided source material. U
 
 ## Initialize The Deck
 
-Require Node.js 22 or newer. Check the runtime:
-
-```bash
-node --version
-npm --version
-```
-
 Create the project from this skill directory:
 
 ```bash
@@ -30,20 +23,7 @@ The initializer sanitizes the slug and never overwrites an existing directory. I
 
 Initialization creates project source files only. It also creates a `.gitignore` for `node_modules/`, PPTX files, preview/output directories, and `.DS_Store`; keep `content/` tracked. The PPTX is created later by `npm run build`.
 
-Enter the printed project directory. If dependencies are absent, ask before running the setup command:
-
-```bash
-npm ci
-```
-
-Build the PPTX and run the complete project verification:
-
-```bash
-npm run build
-npm run verify
-```
-
-Do not install system software without approval.
+Enter the printed project directory and author the deck using the bundled project files.
 
 ## Inspect The Installed API
 
