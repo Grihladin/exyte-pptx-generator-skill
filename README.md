@@ -120,7 +120,7 @@ Quick Look or LibreOffice rendering remains an additional visual QA step when av
 └── exyte-pptx-generator/
     ├── SKILL.md
     ├── agents/openai.yaml
-    ├── scripts/init-deck.mjs
+    ├── scripts/init-deck.ts
     └── starter/
 ```
 

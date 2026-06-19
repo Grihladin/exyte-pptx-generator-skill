@@ -5,11 +5,11 @@ import path from "node:path";
 import test from "node:test";
 import { spawn } from "node:child_process";
 
-const initializer = path.resolve("exyte-pptx-generator/scripts/init-deck.mjs");
+const initializer = path.resolve("exyte-pptx-generator/scripts/init-deck.ts");
 
 function runInitializer(args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [initializer, ...args], {
+    const child = spawn(process.execPath, ["--import", "tsx", initializer, ...args], {
       stdio: ["ignore", "pipe", "pipe"],
     });
     let stdout = "";

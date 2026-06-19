@@ -19,7 +19,7 @@ npm --version
 Create the project from this skill directory:
 
 ```bash
-node scripts/init-deck.mjs <topic-slug> \
+node --import tsx scripts/init-deck.ts <topic-slug> \
   --output-dir <workspace-root> \
   --title "<presentation title>" \
   --date "<DD/MM/YYYY>" \

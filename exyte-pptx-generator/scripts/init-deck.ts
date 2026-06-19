@@ -7,15 +7,15 @@ import { fileURLToPath } from "node:url";
 const skillDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const starterDir = path.join(skillDir, "starter");
 
-function usage(message) {
+function usage(message?: string): never {
   if (message) console.error(message);
   console.error(
-    "Usage: node scripts/init-deck.mjs <slug> [--output-dir DIR] [--title TITLE] [--date DD/MM/YYYY] [--source FILE]",
+    "Usage: node --import tsx scripts/init-deck.ts <slug> [--output-dir DIR] [--title TITLE] [--date DD/MM/YYYY] [--source FILE]",
   );
   process.exit(1);
 }
 
-function sanitizeSlug(value) {
+function sanitizeSlug(value: string): string {
   return value
     .trim()
     .toLowerCase()
@@ -24,7 +24,7 @@ function sanitizeSlug(value) {
     .slice(0, 64);
 }
 
-function titleFromSlug(slug) {
+function titleFromSlug(slug: string): string {
   return slug
     .split("-")
     .filter(Boolean)
@@ -32,7 +32,7 @@ function titleFromSlug(slug) {
     .join(" ");
 }
 
-function todayDmy() {
+function todayDmy(): string {
   const now = new Date();
   return [
     String(now.getDate()).padStart(2, "0"),
@@ -47,7 +47,14 @@ if (args.length === 0 || args.includes("--help")) usage();
 const requestedSlug = sanitizeSlug(args[0]);
 if (!requestedSlug) usage("The slug must contain at least one letter or digit.");
 
-const options = {
+interface InitOptions {
+  outputDir: string;
+  title: string;
+  date: string;
+  source: string;
+}
+
+const options: InitOptions = {
   outputDir: process.cwd(),
   title: titleFromSlug(requestedSlug),
   date: todayDmy(),
@@ -86,14 +93,14 @@ while (fs.existsSync(destination)) {
 
 fs.cpSync(starterDir, destination, { recursive: true, errorOnExist: true });
 
-const replacements = new Map([
+const replacements = new Map<string, string>([
   ["__DECK_SLUG__", finalSlug],
   ["__DECK_TITLE__", options.title],
   ["__DECK_DATE__", options.date],
 ]);
-const textExtensions = new Set([".json", ".md", ".ts"]);
+const textExtensions = new Set<string>([".json", ".md", ".ts"]);
 
-function replaceTokens(directory) {
+function replaceTokens(directory: string): void {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const filePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
