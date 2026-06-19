@@ -1,4 +1,4 @@
-import type { PptxDeck, ThemeApi } from "../../../theme";
+import type { PptxDeck, ThemeApi } from "../../../exyte-pptx-generator/starter/theme";
 
 export default function buildSlide(pptx: PptxDeck, theme: ThemeApi): void {
   const slide = pptx.addSlide();

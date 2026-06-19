@@ -44,7 +44,7 @@ Each deck can be copied elsewhere, installed with `npm ci`, rebuilt with `npm ru
 
 ## Theme
 
-The canonical theme lives in `exyte-pptx-generator/starter/theme.ts`. The root `theme.ts` re-exports it so projects created before v2 keep compiling.
+The canonical theme lives in `exyte-pptx-generator/starter/theme.ts`. It is copied to the root of each generated deck project upon initialization.
 
 The theme provides:
 

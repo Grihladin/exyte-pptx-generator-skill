@@ -1,6 +1,6 @@
 import path from "node:path";
 import pptxgen from "pptxgenjs";
-import * as theme from "../../../theme";
+import * as theme from "../../../exyte-pptx-generator/starter/theme";
 import slide01 from "./slide01_ThemeContract";
 import slide02 from "./slide02_ContentLayout";
 
