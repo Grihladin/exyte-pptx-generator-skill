@@ -6,8 +6,9 @@ An AI skill for generating editable Exyte-style PowerPoint presentations from Ma
 
 1. Clone and open this repository.
 2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory to add it as a skill for further usage.
-3. Provide your presentation content to the agent.
-4. Let it cook.
+3. Start any agent in this folder (e.g. Codex, Claude, opencode and so on...)
+4. Provide your presentation content to the agent.
+5. Let it cook.
 
 Example:
 
@@ -16,6 +17,8 @@ Use @exyte-pptx-generator to create a presentation from example_script.md.
 ```
 
 For best results, describe the purpose and content of each slide in a script.md file.
+
+I was using codex with gpt-5.5, but i belive any frontier model in any modern harnsess can build a decent presenation with this skill.
 
 ## Self-Contained Deck Projects
 
