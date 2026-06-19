@@ -27,17 +27,32 @@ If dependencies are missing, ask before running setup or repair commands. After 
 
 If setup is declined, continue only when the deck can be generated and verified with existing dependencies.
 
+## Required PptxGenJS API Inspection
+
+Before planning slides or writing any presentation code, inspect the API of the installed PptxGenJS version:
+
+1. Read `node_modules/pptxgenjs/package.json`.
+2. Resolve the declaration entry from `exports.types` or `types`.
+3. Read the resolved declaration file completely. For the currently supported package, this is `node_modules/pptxgenjs/types/index.d.ts`.
+
+This inspection is mandatory. Do not rely on memory, examples from another PptxGenJS version, online snippets, or editor autocomplete as a substitute. Do not start writing slide files until the entire declaration entry has been read.
+
+Use the installed declarations as the source of truth for available methods, enums, shapes, charts, media, text, tables, images, and option names. Before using an unfamiliar or less common feature, search the declaration file again and read the complete related interface or type definition.
+
+If the declaration entry is missing or cannot be read, do not guess the API. Complete dependency setup with approval, then repeat this inspection.
+
 ## Workflow
 
-1. Read the requested Markdown file, inline notes, or source material.
-2. Choose a concise presentation title and safe lowercase hyphen slug.
-3. Create `<topic-slug>/` at the workspace root. If it exists, append `-2`, `-3`, etc.
-4. Create `<topic-slug>/content/` and put all deck-specific source material there.
-5. Create `<topic-slug>/slides_code/`.
-6. Create a task/TODO for each slide before writing slide source.
-7. Build one `.ts` file per slide in `<topic-slug>/slides_code/`.
-8. Create `<topic-slug>/slides_code/build.ts`.
-9. Run `npx tsx <topic-slug>/slides_code/build.ts` to verify PPTX generation.
+1. Complete the required PptxGenJS API inspection above.
+2. Read the requested Markdown file, inline notes, or source material.
+3. Choose a concise presentation title and safe lowercase hyphen slug.
+4. Create `<topic-slug>/` at the workspace root. If it exists, append `-2`, `-3`, etc.
+5. Create `<topic-slug>/content/` and put all deck-specific source material there.
+6. Create `<topic-slug>/slides_code/`.
+7. Create a task/TODO for each slide before writing slide source.
+8. Build one `.ts` file per slide in `<topic-slug>/slides_code/`.
+9. Create `<topic-slug>/slides_code/build.ts`.
+10. Run `npx tsx <topic-slug>/slides_code/build.ts` to verify PPTX generation.
 
 ## Output Contract
 
