@@ -1,0 +1,22 @@
+{
+  "name": "exyte-pptx-deck",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Self-contained Exyte PowerPoint deck project",
+  "scripts": {
+    "build": "node --import tsx slides_code/build.ts",
+    "typecheck": "tsc --noEmit",
+    "validate": "node --import tsx scripts/validate-pptx.ts __DECK_SLUG__.pptx --expected-slides 1",
+    "verify": "npm run typecheck && npm run build && npm run validate"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "jszip": "3.10.1",
+    "pptxgenjs": "4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.2",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3"
+  }
+}

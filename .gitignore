@@ -1,6 +1,9 @@
 node_modules/
-output.pptx
 *.pptx
 outputs/
-slides/
-content/
+preview/
+preview-final/
+.DS_Store
+
+# Project-specific local validation deck; the neutral fixture is tracked separately.
+spm-ocr-project-update/

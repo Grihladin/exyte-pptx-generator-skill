@@ -1,105 +1,106 @@
 # Exyte PPTX Generator
 
-An AI skill for generating Exyte-branded PowerPoint presentations from Markdown, notes, or other source material.
-
-It uses [PptxGenJS](https://github.com/gitbrent/PptxGenJS), TypeScript, and a reusable corporate theme. Give the skill and your content to an AI coding agent, ask it to build the presentation, and get a ready-to-use `.pptx` file.
-
-I built this during coffee breaks because I have never used PowerPoint and have no intention of starting now.
+A self-contained AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
 
 ## Quick Start
 
-1. Clone the repository and open it in your AI coding agent.
-2. Give the agent your presentation content or ask it to help you write it.
-3. Ask the agent to read `exyte-pptx-generator/SKILL.md` and build the presentation.
-4. Review the generated `.pptx` file.
+1. Copy `exyte-pptx-generator/` into your agent's skills directory or open this repository.
+2. Give the agent your presentation content.
+3. Ask it to use the `exyte-pptx-generator` skill.
+4. Review the generated deck after `npm run verify` succeeds.
 
-Example prompt:
-
-```text
-Use the exyte-pptx-generator skill to create a presentation from example_script.md
-```
-
-For the best results, provide a presentation script with the purpose and content of each slide described separately. The quality of the source material has a major impact on the quality of the final deck.
-
-I used the skill with GPT-5.5, but any frontier coding model should be capable of generating a presentation.
-
-## Adding it as a proper skill
-
-The skill is not tied to a specific AI agent.
-
-If your agent supports reusable skills, copy the entire `exyte-pptx-generator/` folder into its skills directory. Installation paths and naming conventions vary between agents, so follow the documentation for your tool.
-
-## How It Works
-
-Every slide receives the shared background, logo, footer, date, and page number through `theme.applySlideBase()`. Everything in between is a free content area where the AI agent builds the slide-specific layout.
+Example:
 
 ```text
-+--------------------------------------------------------------------------+
-|  slide title                                                    [logo]   |
-|                                                                          |
-|                                                                          |
-|                         free content area                                |
-|                                                                          |
-|                                                                          |
-|                                                                          |
-|--------------------------------------------------------------------------|
-|  © Exyte | Presentation title                      date | page          |
-+--------------------------------------------------------------------------+
+Use $exyte-pptx-generator to create a presentation from example_script.md.
 ```
 
-Each generated deck is placed in a separate project folder:
+For best results, describe the purpose and content of each slide separately.
+
+## Self-Contained Deck Projects
+
+The skill initializes a complete project for every deck:
 
 ```text
 <topic-slug>/
   <topic-slug>.pptx
+  assets/
+    exyte_logo.png
   content/
     source.md
+  scripts/
+    validate-pptx.ts
   slides_code/
     build.ts
     slide01_DescriptiveName.ts
-    slide02_DescriptiveName.ts
+  package.json
+  package-lock.json
+  theme.ts
+  tsconfig.json
 ```
 
-Keeping the content, generated slide code, and final presentation together makes each deck easy to inspect, edit, and rebuild.
+Each deck can be copied elsewhere, installed with `npm ci`, rebuilt with `npm run build`, and checked with `npm run verify`. It does not depend on this repository after initialization.
 
-## Theme System
+## Theme
 
-`theme.ts` centralizes the design rules while leaving the main slide canvas flexible. The corporate elements stay consistent, while the AI agent remains free to choose the layout best suited to each slide.
+The canonical theme lives in `exyte-pptx-generator/starter/theme.ts`. The root `theme.ts` re-exports it so projects created before v2 keep compiling.
 
-The current rules are based on the Exyte corporate design template. Feel free to extend or adapt them for your needs.
+The theme provides:
 
 | Export | Purpose |
 |---|---|
-| `COLORS` | Exyte brand palette |
-| `TYPOGRAPHY` | Font families and size presets |
-| `LAYOUT` | Slide dimensions and safe content coordinates |
-| `configurePresentation(...)` | Sets the deck title, date, and logo |
-| `applySlideBase(slide)` | Applies the background, logo, footer, and page number |
-| `addSlideTitle(slide, text)` | Adds the standard slide title |
-| `addSubheading(slide, text, options?)` | Adds a themed subheading |
-| `addBodyText(slide, text, options?)` | Adds a standard body-text block |
-| `addThemedTable(slide, headers, rows, options?)` | Adds a table using the shared theme |
-| `createTextRun(text, options?)` | Creates a standard inline text run |
-| `createEmphasisRun(text, options?)` | Creates a bold inline emphasis run |
-| `addCalloutBox(slide, textRuns, options?)` | Adds a themed callout box |
+| `COLORS` | Exyte palette |
+| `TYPOGRAPHY` | Arial role and size presets |
+| `LAYOUT` | 13.333 × 7.5 inch safe geometry |
+| `CHROME_OBJECT_NAMES` | Stable validator-facing names |
+| `configurePresentation(...)` | Deck title, date, and local logo |
+| `applySlideBase(slide)` | Background, PNG logo, footer, and page number |
+| `addSlideTitle(...)` | Header constrained outside the logo zone |
+| `addSubheading(...)` | Standard light-blue subheading |
+| `addBodyText(...)` | Standard 15 pt body text |
+| `addThemedTable(...)` | Branded editable table |
+| `createTextRun(...)` | Standard inline text |
+| `createEmphasisRun(...)` | Bold inline emphasis |
+| `addCalloutBox(...)` | Branded callout |
 
-## Project Structure
+## Verification
+
+At repository level:
+
+```bash
+npm run verify
+```
+
+This typechecks the code, tests the validator and initializer, builds the smoke deck and neutral regression fixture, then validates both PPTX packages.
+
+The validator rejects:
+
+- the legacy 10 × 5.625 inch canvas;
+- off-slide or footer-overlapping objects;
+- title/logo collisions;
+- missing theme chrome;
+- non-Arial slide text;
+- invalid or mislabeled media;
+- SVG image relationships;
+- filesystem paths embedded in XML;
+- unexpected sibling PPTX files.
+
+Quick Look or LibreOffice rendering remains an additional visual QA step when available.
+
+## Repository Structure
 
 ```text
 .
-├── build.ts                         # Smoke-test deck
-├── theme.ts                         # Shared presentation theme
-├── package.json                     # Runtime and build commands
+├── build.ts
+├── theme.ts
+├── fixtures/regression-deck/
+├── tests/
 └── exyte-pptx-generator/
-    ├── SKILL.md                     # Instructions followed by the AI agent
-    ├── agents/openai.yaml           # Optional agent UI metadata
-    └── exyte_logo.svg               # Presentation logo
+    ├── SKILL.md
+    ├── agents/openai.yaml
+    ├── scripts/init-deck.mjs
+    └── starter/
 ```
-
-## Dependencies
-
-- [PptxGenJS](https://www.npmjs.com/package/pptxgenjs) for PowerPoint generation
-- TypeScript, `tsx`, and `@types/node` for authoring and executing TypeScript
 
 ## License
 

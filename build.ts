@@ -4,43 +4,44 @@ import * as theme from "./theme";
 
 async function main(): Promise<void> {
   const pptx = new pptxgen();
-  pptx.layout = "LAYOUT_16x9";
+  pptx.layout = "LAYOUT_WIDE";
   pptx.author = "Exyte";
   pptx.company = "Exyte";
-  pptx.subject = "Smoke test for the TypeScript PPTX generator theme";
+  pptx.subject = "Smoke test for the Exyte PPTX generator";
   pptx.title = "PPTX Generator Smoke Test";
+  pptx.theme = {
+    headFontFace: theme.TYPOGRAPHY.HEADING,
+    bodyFontFace: theme.TYPOGRAPHY.BODY,
+  };
 
   const outputPath = path.join(__dirname, "output.pptx");
-  const logoPath = path.join(__dirname, "exyte-pptx-generator", "exyte_logo.svg");
+  const logoPath = path.join(__dirname, "exyte-pptx-generator", "starter", "assets", "exyte_logo.png");
 
-  theme.configurePresentation("PPTX Generator Smoke Test", "16/06/2026", logoPath);
+  theme.configurePresentation("PPTX Generator Smoke Test", "19/06/2026", logoPath);
   theme.resetSlideCounter(0);
 
   const slide = pptx.addSlide();
   theme.applySlideBase(slide);
   theme.addSlideTitle(slide, "PPTX Generator Smoke Test");
-  theme.addSubheading(slide, "TypeScript runtime and theme contract");
+  theme.addSubheading(slide, "Self-contained widescreen theme and validation contract");
   theme.addBodyText(
     slide,
     [
-      theme.createTextRun("This deck verifies that "),
-      theme.createEmphasisRun("theme.ts"),
-      theme.createTextRun(" can create a PPTX through "),
-      theme.createEmphasisRun("pptxgenjs"),
-      theme.createTextRun(" using the shared Exyte layout contract."),
+      theme.createTextRun("This deck verifies the "),
+      theme.createEmphasisRun("13.333 × 7.5 inch"),
+      theme.createTextRun(" canvas, local PNG logo, Arial typography, and stable Exyte chrome."),
     ],
-    { y: theme.LAYOUT.FREE_Y + 0.6, h: 0.8 },
+    { y: theme.LAYOUT.FREE_Y + 0.65, h: 0.8 },
   );
   theme.addCalloutBox(
     slide,
     [
-      theme.createTextRun("Smoke check: ", { bold: true, color: theme.COLORS.ACCENT }),
-      theme.createTextRun("logo, footer, page number, date, and 16:9 slide sizing are applied by the theme."),
+      theme.createEmphasisRun("Smoke check: "),
+      theme.createTextRun("the generated package must pass strict structural validation before delivery."),
     ],
-    { y: 4.1, h: 0.65 },
   );
 
-  await pptx.writeFile({ fileName: outputPath });
+  await pptx.writeFile({ fileName: outputPath, compression: true });
 }
 
 main().catch((error: unknown) => {

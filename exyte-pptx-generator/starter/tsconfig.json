@@ -9,11 +9,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": [
-    "*.ts",
-    "exyte-pptx-generator/starter/**/*.ts",
-    "fixtures/**/*.ts",
-    "tests/**/*.ts",
-    "*/slides_code/**/*.ts"
-  ]
+  "include": ["theme.ts", "scripts/**/*.ts", "slides_code/**/*.ts"]
 }

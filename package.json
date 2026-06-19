@@ -1,22 +1,28 @@
 {
-  "name": "pptx-slide-generator",
-  "version": "1.0.0",
-  "description": "AI-driven PowerPoint generator using pptxgenjs with a TypeScript corporate theme system",
+  "name": "exyte-pptx-generator-skill",
+  "version": "2.0.0",
+  "description": "Self-contained Exyte PowerPoint generator skill with strict PPTX validation",
   "main": "build.ts",
   "scripts": {
-    "build": "tsx build.ts",
-    "typecheck": "tsc --noEmit"
+    "build": "node --import tsx build.ts",
+    "build:fixture": "node --import tsx fixtures/regression-deck/slides_code/build.ts",
+    "typecheck": "tsc --noEmit",
+    "test:validator": "node --import tsx --test tests/*.test.ts",
+    "validate": "node --import tsx exyte-pptx-generator/starter/scripts/validate-pptx.ts output.pptx --expected-slides 1",
+    "validate:fixture": "node --import tsx exyte-pptx-generator/starter/scripts/validate-pptx.ts fixtures/regression-deck/regression-deck.pptx --expected-slides 2",
+    "verify": "npm run typecheck && npm run test:validator && npm run build && npm run build:fixture && npm run validate && npm run validate:fixture"
   },
-  "keywords": ["pptx", "powerpoint", "slides", "pptxgenjs"],
+  "keywords": ["pptx", "powerpoint", "slides", "pptxgenjs", "codex-skill"],
   "author": "Michael Ratke",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
-    "pptxgenjs": "^4.0.1"
+    "jszip": "3.10.1",
+    "pptxgenjs": "4.0.1"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
-    "tsx": "^4.20.0",
-    "typescript": "^5.8.0"
+    "@types/node": "24.13.2",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3"
   }
 }
