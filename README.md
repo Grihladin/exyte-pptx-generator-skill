@@ -21,7 +21,7 @@ Use the exyte-pptx-generator skill to create a presentation from example_script.
 
 For the best results, provide a presentation script with the purpose and content of each slide described separately. The quality of the source material has a major impact on the quality of the final deck.
 
-I used the skill with GPT-5.5, but any capable frontier coding model should be capable of generating a presentation.
+I used the skill with GPT-5.5, but any frontier coding model should be capable of generating a presentation.
 
 ## Adding it as a proper skill
 
@@ -34,14 +34,17 @@ If your agent supports reusable skills, copy the entire `exyte-pptx-generator/` 
 Every slide receives the shared background, logo, footer, date, and page number through `theme.applySlideBase()`. Everything in between is a free content area where the AI agent builds the slide-specific layout.
 
 ```text
-+------------------------------------------+
-|  slide title                      [logo]  |
-|                                          |
-|         free content area                |
-|                                          |
-|------------------------------------------|
-|  © Exyte | Title          date | page    |
-+------------------------------------------+
++--------------------------------------------------------------------------+
+|  slide title                                                    [logo]   |
+|                                                                          |
+|                                                                          |
+|                         free content area                                |
+|                                                                          |
+|                                                                          |
+|                                                                          |
+|--------------------------------------------------------------------------|
+|  © Exyte | Presentation title                      date | page          |
++--------------------------------------------------------------------------+
 ```
 
 Each generated deck is placed in a separate project folder:
@@ -79,23 +82,6 @@ The current rules are based on the Exyte corporate design template. Feel free to
 | `createTextRun(text, options?)` | Creates a standard inline text run |
 | `createEmphasisRun(text, options?)` | Creates a bold inline emphasis run |
 | `addCalloutBox(slide, textRuns, options?)` | Adds a themed callout box |
-
-## Local Setup and Smoke Test
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-Check the TypeScript code and generate the example presentation:
-
-```bash
-npm run typecheck
-npm run build
-```
-
-The build command runs `build.ts` and writes `output.pptx` to the repository root.
 
 ## Project Structure
 
