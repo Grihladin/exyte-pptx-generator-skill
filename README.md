@@ -1,13 +1,14 @@
 # Exyte PPTX Generator
 
-A self-contained AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
+A AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
 
 ## Quick Start
 
-1. Copy `exyte-pptx-generator/` into your agent's skills directory or open this repository.
-2. Give the agent your presentation content.
-3. Ask it to use the `exyte-pptx-generator` skill.
-4. Review the generated deck after `npm run verify` succeeds.
+1. Clone and open this repository.
+  (optional 
+1. Copy `exyte-pptx-generator/` into your agent's skills directory to add it ass a skill for further usage)
+3. Give the agent your presentation content.
+4. let it cook.
 
 Example:
 
@@ -15,7 +16,7 @@ Example:
 Use $exyte-pptx-generator to create a presentation from example_script.md.
 ```
 
-For best results, describe the purpose and content of each slide separately.
+For best results, describe the purpose and content of each slide in a script.md file.
 
 ## Self-Contained Deck Projects
 
