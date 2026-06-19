@@ -98,7 +98,6 @@ export default function buildSlide(pptx: PptxDeck, theme: ThemeApi): void {
 - Use `theme.COLORS` constants for custom shapes, fills, borders, or manual text overrides.
 - Only hand-specify fonts, sizes, or hex colors when a genuinely custom element is not covered by the current theme helpers; normal slide text must stay at 15 pt.
 - No emoji.
-- Do not use vertical accent bars on callout boxes or cards. Use background color and rounded corners instead.
 
 ## Build File Pattern
 
@@ -144,4 +143,4 @@ npx tsc --noEmit
 npx tsx <topic-slug>/slides_code/build.ts
 ```
 
-Open or inspect the generated PPTX when possible. Verify the logo, footer, date, page numbers, and 16:9 slide size.
+Open or inspect the generated PPTX when possible — visually confirm no text is clipped and no shape bleeds off-slide or overlaps the footer/logo. Verify the footer, date, page numbers, and 16:9 slide size. Fix any issues found and rebuild before considering the deck done.
