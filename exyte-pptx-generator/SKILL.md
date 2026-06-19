@@ -110,7 +110,7 @@ import slide01 from "./slide01_TitleSlide";
 
 const deckSlug = "<topic-slug>";
 const outputPath = path.join(__dirname, "..", `${deckSlug}.pptx`);
-const logoPath = path.join(__dirname, "..", "..", "assets", "Exyte_RGB.svg.png");
+const logoPath = path.join(__dirname, "..", "..", "assets", "Exyte_RGB.svg");
 
 async function main(): Promise<void> {
   const pptx = new pptxgen();

@@ -7,7 +7,7 @@ import slide03 from "./slide03_Research";
 
 const deckSlug = "ai-powered-pptx-generation";
 const outputPath = path.join(__dirname, "..", `${deckSlug}.pptx`);
-const logoPath = path.join(__dirname, "..", "..", "assets", "Exyte_RGB.svg.png");
+const logoPath = path.join(__dirname, "..", "..", "assets", "Exyte_RGB.svg");
 const title = "AI-Powered PPTX Generation";
 
 async function main(): Promise<void> {

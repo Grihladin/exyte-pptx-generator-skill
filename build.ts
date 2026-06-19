@@ -11,7 +11,7 @@ async function main(): Promise<void> {
   pptx.title = "PPTX Generator Smoke Test";
 
   const outputPath = path.join(__dirname, "output.pptx");
-  const logoPath = path.join(__dirname, "assets", "Exyte_RGB.svg.png");
+  const logoPath = path.join(__dirname, "assets", "Exyte_RGB.svg");
 
   theme.updatePresentationSettings("PPTX Generator Smoke Test", "16/06/2026", logoPath);
   theme.resetSlideCounter(0);

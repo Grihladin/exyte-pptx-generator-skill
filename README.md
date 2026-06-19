@@ -52,7 +52,7 @@ The portable Agent Skill lives in `exyte-pptx-generator/SKILL.md`. Use that file
 ```text
 .
 |-- assets/
-|   `-- Exyte_RGB.svg.png
+|   `-- Exyte_RGB.svg
 |-- exyte-pptx-generator/
 |   |-- SKILL.md
 |   `-- agents/openai.yaml
