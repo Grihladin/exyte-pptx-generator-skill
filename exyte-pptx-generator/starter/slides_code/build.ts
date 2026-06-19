@@ -3,8 +3,8 @@ import pptxgen from "pptxgenjs";
 import * as theme from "../theme";
 import slide01 from "./slide01_Title";
 
-const deckSlug = "__DECK_SLUG__";
-const deckTitle = "__DECK_TITLE__";
+const deckSlug = "__DECK_SLUG_TS__";
+const deckTitle = "__DECK_TITLE_TS__";
 const outputPath = path.join(__dirname, "..", `${deckSlug}.pptx`);
 const logoPath = path.join(__dirname, "..", "assets", "exyte_logo.png");
 
@@ -20,7 +20,7 @@ async function main(): Promise<void> {
     bodyFontFace: theme.TYPOGRAPHY.BODY,
   };
 
-  theme.configurePresentation(deckTitle, "__DECK_DATE__", logoPath);
+  theme.configurePresentation(deckTitle, "__DECK_DATE_TS__", logoPath);
   theme.resetSlideCounter(0);
 
   const slides = [slide01];

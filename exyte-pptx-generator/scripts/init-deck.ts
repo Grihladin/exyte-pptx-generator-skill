@@ -95,8 +95,11 @@ fs.cpSync(starterDir, destination, { recursive: true, errorOnExist: true });
 
 const replacements = new Map<string, string>([
   ["__DECK_SLUG__", finalSlug],
-  ["__DECK_TITLE__", options.title],
-  ["__DECK_DATE__", options.date],
+]);
+const typescriptReplacements = new Map<string, string>([
+  [JSON.stringify("__DECK_SLUG_TS__"), JSON.stringify(finalSlug)],
+  [JSON.stringify("__DECK_TITLE_TS__"), JSON.stringify(options.title)],
+  [JSON.stringify("__DECK_DATE_TS__"), JSON.stringify(options.date)],
 ]);
 const textExtensions = new Set<string>([".json", ".md", ".ts"]);
 
@@ -111,6 +114,11 @@ function replaceTokens(directory: string): void {
     let text = fs.readFileSync(filePath, "utf8");
     for (const [token, replacement] of replacements) {
       text = text.replaceAll(token, replacement);
+    }
+    if (path.extname(entry.name) === ".ts") {
+      for (const [token, replacement] of typescriptReplacements) {
+        text = text.replaceAll(token, replacement);
+      }
     }
     fs.writeFileSync(filePath, text);
   }

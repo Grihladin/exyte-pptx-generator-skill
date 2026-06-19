@@ -10,6 +10,9 @@
     "verify": "npm run typecheck && npm run build && npm run validate"
   },
   "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
     "jszip": "3.10.1",
     "pptxgenjs": "4.0.1"

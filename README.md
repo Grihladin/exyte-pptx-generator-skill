@@ -22,7 +22,7 @@ I was using Codex with GPT-5.5, but I believe any frontier model in any modern h
 
 ## How it works
 
-Every slide has a hardcoded header (with the corporate logo) and a hardcoded footer (with the title, date, and page number). These are applied automatically by `theme.applySlideBase()` and follow the corporate template -- the AI never touches them. Everything in between is a free content area where the AI model builds the actual slide content: text, cards, tables, diagrams, whatever fits.
+Every slide uses required theme chrome. `theme.applySlideBase()` adds the background, corporate logo, footer, and page number. `theme.addSlideTitle()` separately adds the slide title. Custom text, cards, tables, diagrams, and media must remain fully inside `theme.LAYOUT.FREE_*`.
 
 You control the look and feel through `theme.ts`. It defines the brand colors, fonts, and size presets in one place.
 
@@ -47,7 +47,7 @@ The skill initializes a complete project for every deck:
 
 ```text
 <topic-slug>/
-  <topic-slug>.pptx
+  .gitignore
   assets/
     exyte_logo.png
   content/
@@ -63,7 +63,18 @@ The skill initializes a complete project for every deck:
   tsconfig.json
 ```
 
-Each deck can be copied elsewhere, installed with `npm ci`, rebuilt with `npm run build`, and checked with `npm run verify`. It does not depend on this repository after initialization.
+Initialization creates the project source files, not the PPTX. The generated `.gitignore` excludes dependencies, PPTX outputs, preview/output directories, and `.DS_Store` while keeping `content/` trackable.
+
+Build and verify the generated deck:
+
+```bash
+cd <topic-slug>
+npm ci
+npm run build
+npm run verify
+```
+
+The `<topic-slug>.pptx` file appears after `npm run build`. Each project is self-contained and does not depend on this repository after initialization.
 
 ## Theme
 
@@ -100,6 +111,7 @@ This typechecks the code, tests the validator and initializer, builds the smoke 
 The validator rejects:
 
 - off-slide or footer-overlapping objects;
+- any custom object not fully contained within the exact rounded EMU boundaries derived from `LAYOUT.FREE_X`, `FREE_Y`, `FREE_W`, and `FREE_H`;
 - title/logo collisions;
 - missing theme chrome;
 - non-Arial slide text;
@@ -108,7 +120,7 @@ The validator rejects:
 - filesystem paths embedded in XML;
 - unexpected sibling PPTX files.
 
-Quick Look or LibreOffice rendering remains an additional visual QA step when available.
+After structural verification, render and inspect every slide manually in PowerPoint, Quick Look, or LibreOffice. Check wrapping, clipping, overlaps, alignment, image quality, and overall visual balance; report when rendering is unavailable.
 
 ## Repository Structure
 

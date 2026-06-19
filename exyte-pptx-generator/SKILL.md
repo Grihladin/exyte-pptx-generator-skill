@@ -9,7 +9,7 @@ Create an editable PowerPoint deck project from user-provided source material. U
 
 ## Initialize The Deck
 
-Check the runtime:
+Require Node.js 22 or newer. Check the runtime:
 
 ```bash
 node --version
@@ -28,10 +28,19 @@ node --import tsx scripts/init-deck.ts <topic-slug> \
 
 The initializer sanitizes the slug and never overwrites an existing directory. It appends `-2`, `-3`, and so on when necessary.
 
-Enter the printed project directory. If dependencies are absent, ask before running:
+Initialization creates project source files only. It also creates a `.gitignore` for `node_modules/`, PPTX files, preview/output directories, and `.DS_Store`; keep `content/` tracked. The PPTX is created later by `npm run build`.
+
+Enter the printed project directory. If dependencies are absent, ask before running the setup command:
 
 ```bash
 npm ci
+```
+
+Build the PPTX and run the complete project verification:
+
+```bash
+npm run build
+npm run verify
 ```
 
 Do not install system software without approval.
@@ -75,9 +84,9 @@ export default function buildSlide(pptx: PptxDeck, theme: ThemeApi): void {
 ## Layout Contract
 
 - Use the 13.333 × 7.5 inch PowerPoint Widescreen canvas.
-- Call `theme.applySlideBase(slide)` exactly once per slide.
-- Use `theme.addSlideTitle()` for normal headers.
-- Keep custom objects inside `theme.LAYOUT.FREE_*`.
+- Call `theme.applySlideBase(slide)` exactly once per slide to add the background, logo, footer, and page number.
+- Call `theme.addSlideTitle()` separately for the normal slide title.
+- Keep every custom object fully inside `theme.LAYOUT.FREE_*`. The validator enforces the exact rounded EMU boundaries with no overflow allowance.
 - Respect `theme.LAYOUT.TITLE_W` and the reserved logo zone.
 - Do not recreate the logo, footer line, footer text, date, divider, or page number.
 - Do not use absolute local paths as alt text, object names, visible content, or notes.
@@ -99,7 +108,7 @@ The theme owns stable object names for validation. Do not rename its chrome obje
 
 ```text
 <topic-slug>/
-  <topic-slug>.pptx
+  .gitignore
   assets/
     exyte_logo.png
   content/
@@ -115,6 +124,8 @@ The theme owns stable object names for validation. Do not rename its chrome obje
   tsconfig.json
 ```
 
+The `<topic-slug>.pptx` output appears after `npm run build`.
+
 Keep user inputs under `content/`. Never modify or move the user's originals unless explicitly asked.
 
 ## Verify Before Delivery
@@ -129,7 +140,7 @@ The required validator checks:
 
 - archive integrity and exact slide count;
 - 13.333 × 7.5 inch slide dimensions;
-- off-slide objects and footer intrusion;
+- off-slide objects, footer intrusion, and strict containment of all custom objects within `LAYOUT.FREE_*`;
 - title/logo separation;
 - required logo and footer chrome;
 - Arial typography;
@@ -138,6 +149,6 @@ The required validator checks:
 - absolute filesystem path leakage;
 - ambiguous sibling PPTX outputs.
 
-When Quick Look or LibreOffice is available, also render every slide and inspect text wrapping, clipping, overlap, alignment, and overall visual quality. Structural validation is mandatory even when rendering is unavailable.
+After structural verification, render every slide in PowerPoint, Quick Look, or LibreOffice and manually inspect text wrapping, clipping, overlap, alignment, image quality, and overall visual quality. If rendering is unavailable, report that caveat. Structural validation remains mandatory.
 
 Fix every validation or visible rendering defect and rerun `npm run verify` before returning the final PPTX path.

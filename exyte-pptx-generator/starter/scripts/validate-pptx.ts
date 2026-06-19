@@ -10,6 +10,10 @@ export const EMU_PER_INCH = 914_400;
 
 const FOOTER_LINE_Y_EMU = Math.round(LAYOUT.FOOTER_LINE_Y * EMU_PER_INCH);
 const TITLE_LOGO_GAP_EMU = Math.round(LAYOUT.LOGO_GAP * EMU_PER_INCH);
+const FREE_X_EMU = Math.round(LAYOUT.FREE_X * EMU_PER_INCH);
+const FREE_Y_EMU = Math.round(LAYOUT.FREE_Y * EMU_PER_INCH);
+const FREE_W_EMU = Math.round(LAYOUT.FREE_W * EMU_PER_INCH);
+const FREE_H_EMU = Math.round(LAYOUT.FREE_H * EMU_PER_INCH);
 const REQUIRED_CHROME = [
   CHROME_OBJECT_NAMES.LOGO,
   CHROME_OBJECT_NAMES.FOOTER_LINE,
@@ -334,6 +338,19 @@ export async function validatePptx(
         object.y + object.h > FOOTER_LINE_Y_EMU
       ) {
         errors.push(`${slideLabel}: "${object.name || "unnamed object"}" intrudes into the footer area.`);
+      }
+      if (
+        !REQUIRED_CHROME.includes(object.name as (typeof REQUIRED_CHROME)[number]) &&
+        object.name !== CHROME_OBJECT_NAMES.SLIDE_TITLE &&
+        (object.x < FREE_X_EMU ||
+          object.y < FREE_Y_EMU ||
+          object.x + object.w > FREE_X_EMU + FREE_W_EMU ||
+          object.y + object.h > FREE_Y_EMU + FREE_H_EMU)
+      ) {
+        errors.push(
+          `${slideLabel}: "${object.name || "unnamed object"}" must be fully contained inside ` +
+            "the LAYOUT.FREE_* content area.",
+        );
       }
       if (/<a:t>[\s\S]*?<\/a:t>/.test(object.xml) && !/typeface="Arial"/.test(object.xml)) {
         errors.push(`${slideLabel}: "${object.name || "unnamed text"}" does not explicitly use Arial.`);

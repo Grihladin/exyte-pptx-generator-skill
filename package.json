@@ -1,8 +1,8 @@
 {
   "name": "exyte-pptx-generator-skill",
   "version": "2.0.0",
+  "private": true,
   "description": "Self-contained Exyte PowerPoint generator skill with strict PPTX validation",
-  "main": "build.ts",
   "scripts": {
     "build": "node --import tsx build.ts",
     "build:fixture": "node --import tsx fixtures/regression-deck/slides_code/build.ts",
@@ -16,6 +16,9 @@
   "author": "Michael Ratke",
   "license": "MIT",
   "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
     "jszip": "3.10.1",
     "pptxgenjs": "4.0.1"

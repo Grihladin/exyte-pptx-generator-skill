@@ -30,7 +30,6 @@ export const COLORS = {
 export const TYPOGRAPHY = {
   HEADING: "Arial",
   BODY: "Arial",
-  MONO: "Consolas",
   TITLE_SIZE: 24,
   SUBHEADING_SIZE: 15,
   BODY_SIZE: 15,
@@ -93,10 +92,6 @@ export const CHROME_OBJECT_NAMES = {
   FOOTER_PAGE: "Exyte Footer Page",
   SLIDE_TITLE: "Exyte Slide Title",
 } as const;
-
-export interface ApplySlideBaseOptions {
-  skipFooter?: boolean;
-}
 
 export interface PresentationConfig {
   title?: string;
@@ -177,7 +172,7 @@ export function formatFooterDate(date: string | Date | undefined | null): string
   return input;
 }
 
-export function applySlideBase(slide: Slide, options: ApplySlideBaseOptions = {}): void {
+export function applySlideBase(slide: Slide): void {
   slideCounter += 1;
   const currentSlide = slideCounter;
 
@@ -194,8 +189,6 @@ export function applySlideBase(slide: Slide, options: ApplySlideBaseOptions = {}
       objectName: CHROME_OBJECT_NAMES.LOGO,
     });
   }
-
-  if (options.skipFooter) return;
 
   slide.addShape("rect", {
     x: 0,
