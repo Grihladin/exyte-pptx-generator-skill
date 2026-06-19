@@ -1,14 +1,13 @@
 # Exyte PPTX Generator
 
-A AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
+An AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
 
 ## Quick Start
 
 1. Clone and open this repository.
-  (optional 
-1. Copy `exyte-pptx-generator/` into your agent's skills directory to add it ass a skill for further usage)
-3. Give the agent your presentation content.
-4. let it cook.
+2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory to add it as a skill for further usage.
+3. Provide your presentation content to the agent.
+4. Let it cook.
 
 Example:
 
@@ -76,7 +75,6 @@ This typechecks the code, tests the validator and initializer, builds the smoke 
 
 The validator rejects:
 
-- the legacy 10 × 5.625 inch canvas;
 - off-slide or footer-overlapping objects;
 - title/logo collisions;
 - missing theme chrome;
@@ -93,7 +91,6 @@ Quick Look or LibreOffice rendering remains an additional visual QA step when av
 ```text
 .
 ├── build.ts
-├── theme.ts
 ├── fixtures/regression-deck/
 ├── tests/
 └── exyte-pptx-generator/
