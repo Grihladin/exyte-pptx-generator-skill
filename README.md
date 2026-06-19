@@ -12,7 +12,7 @@ An AI skill for generating editable Exyte-style PowerPoint presentations from Ma
 Example:
 
 ```text
-Use $exyte-pptx-generator to create a presentation from example_script.md.
+Use @exyte-pptx-generator to create a presentation from example_script.md.
 ```
 
 For best results, describe the purpose and content of each slide in a script.md file.
