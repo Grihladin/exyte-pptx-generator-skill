@@ -4,16 +4,17 @@ An AI skill for generating Exyte-style PowerPoint presentations from Markdown, n
 
 ## Quick Start
 
-1. Clone and open this repository.
-2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory (each tool does it slightly differently, so please read the documentation for yours) to add it as a skill for further usage.
-3. Run any AI coding agent of your choice (e.g., Codex, Claude, Cursor, OpenCode, etc.) inside the repo.
-4. Provide your presentation content to the agent.
-5. Let it cook.
+1. Install Node.js 22 or newer.
+2. Clone and open this repository.
+3. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory (each tool does it slightly differently, so please read the documentation for yours) to add it as a skill for further usage.
+4. Run any AI coding agent of your choice (e.g., Codex, Claude, Cursor, OpenCode, etc.) inside the repo.
+5. Provide your presentation content to the agent.
+6. Let it cook.
 
 Example:
 
 ```text
-Use @exyte-pptx-generator to create a presentation from example_script.md.
+Use $exyte-pptx-generator to create a presentation from example_script.md.
 ```
 
 For best results, describe the purpose and content of each slide in a script.md file.
@@ -70,11 +71,10 @@ Build and verify the generated deck:
 ```bash
 cd <topic-slug>
 npm ci
-npm run build
 npm run verify
 ```
 
-The `<topic-slug>.pptx` file appears after `npm run build`. Each project is self-contained and does not depend on this repository after initialization.
+The `<topic-slug>.pptx` file appears when `npm run verify` runs its build step. You can also rebuild it directly with `npm run build`. Each project is self-contained and does not depend on this repository after initialization.
 
 ## Theme
 
