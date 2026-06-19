@@ -36,17 +36,16 @@ export const COLORS = {
   WHITE: "FFFFFF",
 } as const;
 
-export const FONTS = {
+export const TYPOGRAPHY = {
   HEADING: "Arial",
   BODY: "Arial",
   MONO: "Consolas",
   TITLE_SIZE: 24,
-  SUBHEADER_SIZE: 15,
-  SUBTITLE_SIZE: 15,
+  SUBHEADING_SIZE: 15,
   BODY_SIZE: 15,
   BODY_MIN_SIZE: 15,
   BODY_MAX_SIZE: 15,
-  HIGHLIGHT_SIZE: 15,
+  EMPHASIS_SIZE: 15,
   SMALL_SIZE: 15,
   TABLE_SIZE: 15,
   TABLE_HEADER_SIZE: 15,
@@ -91,18 +90,18 @@ export interface ApplySlideBaseOptions {
   skipFooter?: boolean;
 }
 
-export interface PresentationSettings {
+export interface PresentationConfig {
   title?: string;
   date?: string;
   logoPath?: string;
 }
 
-export interface StyledTableCell {
+export interface ThemedTableCell {
   text: string;
-  opts?: Partial<TableCellOptions>;
+  options?: Partial<TableCellOptions>;
 }
 
-export interface StyledTableOptions {
+export interface ThemedTableOptions {
   x?: number;
   y?: number;
   w?: number;
@@ -124,19 +123,19 @@ let presentationTitle = "";
 let presentationDate = "";
 let logoPath = "";
 
-export function updatePresentationSettings(
-  titleOrSettings: string | PresentationSettings,
+export function configurePresentation(
+  titleOrConfig: string | PresentationConfig,
   date = "",
   logo = "",
 ): void {
-  if (typeof titleOrSettings === "object") {
-    presentationTitle = titleOrSettings.title ?? "";
-    presentationDate = titleOrSettings.date ?? "";
-    logoPath = titleOrSettings.logoPath ?? "";
+  if (typeof titleOrConfig === "object") {
+    presentationTitle = titleOrConfig.title ?? "";
+    presentationDate = titleOrConfig.date ?? "";
+    logoPath = titleOrConfig.logoPath ?? "";
     return;
   }
 
-  presentationTitle = titleOrSettings || "";
+  presentationTitle = titleOrConfig || "";
   presentationDate = date || "";
   logoPath = logo || "";
 }
@@ -171,7 +170,7 @@ export function formatFooterDate(date: string | Date | undefined | null): string
   return input;
 }
 
-export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): void {
+export function applySlideBase(slide: Slide, options: ApplySlideBaseOptions = {}): void {
   slideCounter += 1;
   const currentSlide = slideCounter;
 
@@ -188,7 +187,7 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
     });
   }
 
-  if (opts.skipFooter) return;
+  if (options.skipFooter) return;
 
   slide.addShape("rect", {
     x: 0,
@@ -206,7 +205,7 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
     w: LAYOUT.FOOTER_LEFT_W,
     h: LAYOUT.FOOTER_H,
     fontSize: LAYOUT.FOOTER_FONT_SIZE,
-    fontFace: FONTS.BODY,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.TEXT_MUTED,
     align: "left",
     valign: "middle",
@@ -219,7 +218,7 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
     w: LAYOUT.FOOTER_DATE_W,
     h: LAYOUT.FOOTER_H,
     fontSize: LAYOUT.FOOTER_FONT_SIZE,
-    fontFace: FONTS.BODY,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.TEXT_MUTED,
     align: "right",
     valign: "middle",
@@ -232,7 +231,7 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
     w: LAYOUT.FOOTER_DIVIDER_W,
     h: LAYOUT.FOOTER_H,
     fontSize: LAYOUT.FOOTER_FONT_SIZE,
-    fontFace: FONTS.BODY,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.TEXT_MUTED,
     align: "center",
     valign: "middle",
@@ -245,7 +244,7 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
     w: LAYOUT.FOOTER_PAGE_W,
     h: LAYOUT.FOOTER_H,
     fontSize: LAYOUT.FOOTER_FONT_SIZE,
-    fontFace: FONTS.BODY,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.TEXT_MUTED,
     align: "center",
     valign: "middle",
@@ -253,14 +252,14 @@ export function applySlideBase(slide: Slide, opts: ApplySlideBaseOptions = {}): 
   });
 }
 
-export function addTitle(slide: Slide, text: string): void {
+export function addSlideTitle(slide: Slide, text: string): void {
   slide.addText(text, {
     x: LAYOUT.CONTENT_X,
     y: LAYOUT.TITLE_Y,
     w: LAYOUT.CONTENT_W,
     h: LAYOUT.TITLE_H,
-    fontSize: FONTS.TITLE_SIZE,
-    fontFace: FONTS.HEADING,
+    fontSize: TYPOGRAPHY.TITLE_SIZE,
+    fontFace: TYPOGRAPHY.HEADING,
     color: COLORS.TEXT_PRIMARY,
     bold: false,
     valign: "middle",
@@ -268,7 +267,7 @@ export function addTitle(slide: Slide, text: string): void {
   });
 }
 
-export function addSubheader(slide: Slide, text: string, overrides: Partial<TextOptions> = {}): void {
+export function addSubheading(slide: Slide, text: string, overrides: Partial<TextOptions> = {}): void {
   const { x = LAYOUT.FREE_X, y = LAYOUT.FREE_Y, w = LAYOUT.FREE_W, h = 0.3, ...textOpts } = overrides;
 
   slide.addText(text, {
@@ -276,8 +275,8 @@ export function addSubheader(slide: Slide, text: string, overrides: Partial<Text
     y,
     w,
     h,
-    fontSize: FONTS.SUBHEADER_SIZE,
-    fontFace: FONTS.BODY,
+    fontSize: TYPOGRAPHY.SUBHEADING_SIZE,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.LIGHT_BLUE,
     bold: true,
     valign: "top",
@@ -286,11 +285,7 @@ export function addSubheader(slide: Slide, text: string, overrides: Partial<Text
   });
 }
 
-export function addSubtitle(slide: Slide, text: string, overrides: Partial<TextOptions> = {}): void {
-  addSubheader(slide, text, overrides);
-}
-
-export function addBody(slide: Slide, textOrRuns: string | TextRuns, overrides: Partial<TextOptions> = {}): void {
+export function addBodyText(slide: Slide, textOrRuns: string | TextRuns, overrides: Partial<TextOptions> = {}): void {
   const {
     x = LAYOUT.FREE_X,
     y = LAYOUT.FREE_Y + 0.4,
@@ -304,8 +299,8 @@ export function addBody(slide: Slide, textOrRuns: string | TextRuns, overrides: 
     y,
     w,
     h,
-    fontSize: FONTS.BODY_SIZE,
-    fontFace: FONTS.BODY,
+    fontSize: TYPOGRAPHY.BODY_SIZE,
+    fontFace: TYPOGRAPHY.BODY,
     color: COLORS.TEXT_BODY,
     valign: "top",
     lineSpacing: 22,
@@ -314,11 +309,11 @@ export function addBody(slide: Slide, textOrRuns: string | TextRuns, overrides: 
   });
 }
 
-export function addStyledTable(
+export function addThemedTable(
   slide: Slide,
   headers: string[],
-  dataRows: Array<Array<string | StyledTableCell>>,
-  opts: StyledTableOptions = {},
+  dataRows: Array<Array<string | ThemedTableCell>>,
+  options: ThemedTableOptions = {},
 ): void {
   const headerRow: TableRow = headers.map((header) => ({
     text: header,
@@ -326,8 +321,8 @@ export function addStyledTable(
       bold: true,
       color: COLORS.TEXT_PRIMARY,
       fill: { color: COLORS.BG_SURFACE },
-      fontFace: FONTS.BODY,
-      fontSize: FONTS.TABLE_HEADER_SIZE,
+      fontFace: TYPOGRAPHY.BODY,
+      fontSize: TYPOGRAPHY.TABLE_HEADER_SIZE,
       align: "left",
       valign: "middle",
       margin: [5, 8, 5, 8],
@@ -341,56 +336,56 @@ export function addStyledTable(
       return {
         text: cell.text,
         options: {
-          fontFace: FONTS.BODY,
-          fontSize: opts.bodyFontSize ?? FONTS.TABLE_SIZE,
+          fontFace: TYPOGRAPHY.BODY,
+          fontSize: options.bodyFontSize ?? TYPOGRAPHY.TABLE_SIZE,
           color: COLORS.TEXT_BODY,
           fill: { color: rowIdx % 2 === 0 ? COLORS.BG : COLORS.BG_CARD },
           align: "left",
           valign: "top",
           margin: [5, 8, 5, 8],
-          ...cell.opts,
+          ...cell.options,
         },
       };
     }),
   );
 
   slide.addTable([headerRow, ...bodyRows], {
-    x: opts.x ?? LAYOUT.FREE_X,
-    y: opts.y ?? LAYOUT.FREE_Y + 0.4,
-    w: opts.w ?? LAYOUT.FREE_W,
-    colW: opts.colW,
+    x: options.x ?? LAYOUT.FREE_X,
+    y: options.y ?? LAYOUT.FREE_Y + 0.4,
+    w: options.w ?? LAYOUT.FREE_W,
+    colW: options.colW,
     border: { type: "solid", pt: 0.5, color: COLORS.BORDER },
-    fontFace: FONTS.BODY,
-    rowH: opts.rowH,
+    fontFace: TYPOGRAPHY.BODY,
+    rowH: options.rowH,
   });
 }
 
-export function makeTextRun(text: string, opts: Partial<TextOptions> = {}): TextRun {
+export function createTextRun(text: string, options: Partial<TextOptions> = {}): TextRun {
   return {
     text,
     options: {
-      fontFace: FONTS.BODY,
-      fontSize: FONTS.BODY_SIZE,
+      fontFace: TYPOGRAPHY.BODY,
+      fontSize: TYPOGRAPHY.BODY_SIZE,
       color: COLORS.TEXT_BODY,
       lang: PRESENTATION_LANGUAGE,
-      ...opts,
+      ...options,
     },
   };
 }
 
-export function makeHighlightRun(text: string, opts: Partial<TextOptions> = {}): TextRun {
-  return makeTextRun(text, {
+export function createEmphasisRun(text: string, options: Partial<TextOptions> = {}): TextRun {
+  return createTextRun(text, {
     bold: true,
     color: COLORS.TEXT_BODY,
-    ...opts,
+    ...options,
   });
 }
 
-export function addCalloutBox(slide: Slide, textRuns: TextRuns, opts: CalloutBoxOptions = {}): void {
-  const x = opts.x ?? LAYOUT.CONTENT_X;
-  const y = opts.y ?? 4.2;
-  const w = opts.w ?? LAYOUT.CONTENT_W;
-  const h = opts.h ?? 0.7;
+export function addCalloutBox(slide: Slide, textRuns: TextRuns, options: CalloutBoxOptions = {}): void {
+  const x = options.x ?? LAYOUT.CONTENT_X;
+  const y = options.y ?? 4.2;
+  const w = options.w ?? LAYOUT.CONTENT_W;
+  const h = options.h ?? 0.7;
 
   slide.addShape("roundRect", {
     x,
@@ -406,8 +401,8 @@ export function addCalloutBox(slide: Slide, textRuns: TextRuns, opts: CalloutBox
     y,
     w: w - 0.3,
     h,
-    fontFace: FONTS.BODY,
-    fontSize: opts.fontSize ?? FONTS.BODY_SIZE,
+    fontFace: TYPOGRAPHY.BODY,
+    fontSize: options.fontSize ?? TYPOGRAPHY.BODY_SIZE,
     color: COLORS.TEXT_BODY,
     valign: "middle",
     lang: PRESENTATION_LANGUAGE,
@@ -416,18 +411,17 @@ export function addCalloutBox(slide: Slide, textRuns: TextRuns, opts: CalloutBox
 
 export interface ThemeApi {
   COLORS: typeof COLORS;
-  FONTS: typeof FONTS;
+  TYPOGRAPHY: typeof TYPOGRAPHY;
   PRESENTATION_LANGUAGE: typeof PRESENTATION_LANGUAGE;
   LAYOUT: typeof LAYOUT;
-  updatePresentationSettings: typeof updatePresentationSettings;
+  configurePresentation: typeof configurePresentation;
   resetSlideCounter: typeof resetSlideCounter;
   applySlideBase: typeof applySlideBase;
-  addTitle: typeof addTitle;
-  addSubheader: typeof addSubheader;
-  addSubtitle: typeof addSubtitle;
-  addBody: typeof addBody;
-  addStyledTable: typeof addStyledTable;
-  makeTextRun: typeof makeTextRun;
-  makeHighlightRun: typeof makeHighlightRun;
+  addSlideTitle: typeof addSlideTitle;
+  addSubheading: typeof addSubheading;
+  addBodyText: typeof addBodyText;
+  addThemedTable: typeof addThemedTable;
+  createTextRun: typeof createTextRun;
+  createEmphasisRun: typeof createEmphasisRun;
   addCalloutBox: typeof addCalloutBox;
 }
