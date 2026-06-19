@@ -1,12 +1,12 @@
 # Exyte PPTX Generator
 
-An AI skill for generating editable Exyte-style PowerPoint presentations from Markdown, notes, or other source material.
+An AI skill for generating Exyte-style PowerPoint presentations from Markdown, notes, or other source material using [pptxgenjs](https://github.com/gitbrent/PptxGenJS).
 
 ## Quick Start
 
 1. Clone and open this repository.
 2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory to add it as a skill for further usage.
-3. Start any agent in this folder (e.g. Codex, Claude, opencode and so on...)
+3. Run inside the repo any AI coding agent of your choice (e.g., Claude, Cursor, OpenCode, etc.).
 4. Provide your presentation content to the agent.
 5. Let it cook.
 
@@ -18,7 +18,28 @@ Use @exyte-pptx-generator to create a presentation from example_script.md.
 
 For best results, describe the purpose and content of each slide in a script.md file.
 
-I was using codex with gpt-5.5, but i belive any frontier model in any modern harnsess can build a decent presenation with this skill.
+I was using Codex with GPT-5.5, but I believe any frontier model in any modern harness can build a decent presentation with this skill.
+
+## How it works
+
+Every slide has a hardcoded header (with the corporate logo) and a hardcoded footer (with the title, date, and page number). These are applied automatically by `theme.applySlideBase()` and follow the corporate template -- the AI never touches them. Everything in between is a free content area where the AI model builds the actual slide content: text, cards, tables, diagrams, whatever fits.
+
+You control the look and feel through `theme.ts`. It defines the brand colors, fonts, and size presets in one place.
+
+```
++-------------------------------------------------------------------------+
+|  Slide Title                                                     [LOGO] |  <- header (title + logo)
+|-------------------------------------------------------------------------|
+|                                                                         |
+|                                                                         |
+|                            FREE CONTENT AREA                            |
+|                             (AI builds here)                            |
+|                                                                         |
+|                                                                         |
+|-------------------------------------------------------------------------|
+|  (c) Exyte | Presentation Title                     Date | Slide Page   |  <- footer
++-------------------------------------------------------------------------+
+```
 
 ## Self-Contained Deck Projects
 
