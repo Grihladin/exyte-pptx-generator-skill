@@ -5,8 +5,8 @@ An AI skill for generating Exyte-style PowerPoint presentations from Markdown, n
 ## Quick Start
 
 1. Clone and open this repository.
-2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory (each tool deos it slightly different so pls read docs for yours) to add it as a skill for further usage.
-3. Run inside the repo any AI coding agent of your choice (e.g., Codex, Claude, Cursor, OpenCode, etc.).
+2. (Optional) Copy `exyte-pptx-generator/` into your agent's skills directory (each tool does it slightly differently, so please read the documentation for yours) to add it as a skill for further usage.
+3. Run any AI coding agent of your choice (e.g., Codex, Claude, Cursor, OpenCode, etc.) inside the repo.
 4. Provide your presentation content to the agent.
 5. Let it cook.
 
